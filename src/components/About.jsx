@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import profileImg from '../assets/63128940640.png';
+import profileImg from '../assets/PROFILE_pp.jpg';
 
 const About = () => {
     return (
