@@ -53,21 +53,27 @@ const Achievements = () => {
                 />
                 <TimelineItem
                     year="2023"
+                    title="Overview of Space Science and Technology"
+                    org="Online Training Programme (ISRO START) conducted by ISRO HQ, Bangalore."
+                    delay={0.5}
+                />
+                <TimelineItem
+                    year="2023"
                     title="National Solar Vehicle Championship"
                     org="VNIT - Nagpur (Aug - Oct 2023)"
-                    delay={0.5}
+                    delay={0.6}
                 />
                 <TimelineItem
                     year="2023"
                     title="Go-Kart Race Vehicle"
                     org="HICET - Coimbatore. Designed a lightweight, aerodynamic race vehicle with 3Kw PMSM motor (75km/hr)."
-                    delay={0.6}
+                    delay={0.7}
                 />
                 <TimelineItem
                     year="2023"
                     title="National Level Technical Hands-on Workshop on MATLAB"
                     org="Workshop Participant"
-                    delay={0.7}
+                    delay={0.8}
                 />
             </div>
 

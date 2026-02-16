@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { FaCode, FaRobot, FaLayerGroup, FaDesktop } from 'react-icons/fa';
+import { FaCode, FaRobot, FaLayerGroup, FaDesktop, FaCarBattery } from 'react-icons/fa';
 
 const SkillCategory = ({ title, icon, skills, delay }) => (
     <motion.div
@@ -24,25 +24,25 @@ const Skills = () => {
                 <SkillCategory
                     title="Robotics"
                     icon={<FaRobot />}
-                    skills={["ROS1 / ROS2", "MoveIt2", "Nav2", "SLAM", "AMRs"]}
+                    skills={["ROS1 / ROS2", "MoveIt2", "Nav2", "Kinematics", "SLAM", "AMRs"]}
                     delay={0}
                 />
                 <SkillCategory
                     title="Simulation"
                     icon={<FaDesktop />}
-                    skills={["Gazebo", "RViz", "NVIDIA Isaac Sim", "Isaac Lab"]}
+                    skills={["Gazebo", "RViz", "NVIDIA Isaac Sim", "IPG CarMaker", "MATLAB / Simulink"]}
                     delay={0.1}
                 />
                 <SkillCategory
-                    title="Languages"
-                    icon={<FaCode />}
-                    skills={["Python", "C++", "MATLAB", "Bash"]}
+                    title="Automotive & EV"
+                    icon={<FaCarBattery />}
+                    skills={["EV Powertrain", "BMS", "PMSM Motors", "Lithium-ion Tech"]}
                     delay={0.2}
                 />
                 <SkillCategory
-                    title="Design & Perception"
-                    icon={<FaLayerGroup />}
-                    skills={["SolidWorks", "Computer Vision", "OpenCV", "Machine Learning"]}
+                    title="Languages & Vision"
+                    icon={<FaCode />}
+                    skills={["Python", "C++", "VLM / CLIP", "OpenCV", "TensorRT"]}
                     delay={0.3}
                 />
             </div>

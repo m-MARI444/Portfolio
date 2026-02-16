@@ -8,6 +8,9 @@ import cobotImg from '../assets/co-bot.png';
 import borewellImg from '../assets/borewell.jpg';
 import isaacSimImg from '../assets/issac_sim.png';
 import solarVehicleImg from '../assets/autonomouse_vehicle.jpg';
+import vlmImg from '../assets/VLM.png';
+import ipgImg from '../assets/ATV_dynamic.png';
+import bajaImg from '../assets/BAJA_2026.jpg';
 
 const projectsData = [
     {
@@ -66,7 +69,8 @@ const projectsData = [
         title: "Robotic Borewell Rescue Kit",
         description: "Award-winning robotic rescue solution. Designed electronics architecture and motor control units.",
         tags: ["Embedded", "Electronics", "Control", "SIH Winner"],
-        image: borewellImg
+        image: borewellImg,
+        videoLink: "https://www.youtube.com/embed/1lIXpteoRPM"
     },
     {
         title: "Isaac Sim & Lab Simulation",
@@ -80,6 +84,58 @@ const projectsData = [
         description: "Designed and fabricated a 3-wheeled solar vehicle achieving 25km/hr without external batteries. Competed in National Solar Vehicle Championship & MIT Manipal, featuring Level 2 autonomous navigation capabilities.",
         tags: ["Solar Power", "Autonomous Navigation", "Fabrication", "L2 Autonomy"],
         image: solarVehicleImg
+    },
+    {
+        title: "Semantic Event Detection via CLIP-Motion Fusion",
+        description: "A real-time, zero-shot video event detection system using OpenAI's CLIP and quantized PyTorch for detecting 'Person Walking', 'Vehicle Stopping', and 'Crowded Scene'.",
+        tags: ["VLM", "OpenAI CLIP", "PyTorch", "OpenCV", "Zero-Shot"],
+        image: vlmImg,
+        longDescription: `
+            <p>This project implements a robust pipeline for detecting semantic events in video streams by combining CLIP's semantic understanding with temporal motion heuristics. It distinguishes between static objects and active events without the need for traditional retraining.</p>
+            <p><strong>Key Features:</strong></p>
+            <ul>
+                <li><strong>Zero-Shot Detection:</strong> Leverages CLIP's prompt ensembling to detect events in diverse environments.</li>
+                <li><strong>Relative Margin Decision:</strong> Replaces brittle thresholds with scientific ranking for stable detections.</li>
+                <li><strong>Optimized Performance:</strong> Dynamic Quantization (INT8) reduces model size by 2.5x and boosts inference speed.</li>
+            </ul>
+        `,
+        githubLink: "https://github.com/m-MARI444/VLM-Zero-Shot-Semantic-Event-Detection-via-CLIP-Motion-Fusion"
+    },
+    {
+        title: "IPG Vehicle Dynamics & Autonomous System",
+        description: "Advanced vehicle dynamics simulation and autonomous system development using IPG CarMaker and MATLAB/Simulink.",
+        tags: ["IPG CarMaker", "MATLAB", "Simulink", "Vehicle Dynamics", "Autonomous"],
+        image: ipgImg,
+        longDescription: `
+            <p><strong>Vehicle Dynamic Testing:</strong> Implemented comprehensive vehicle parameterization in IPG CarMaker, including full kinematic modeling, subsystem parameterization (mass, inertia), and suspension geometry optimization.</p>
+            <p><strong>Autonomous System Integration:</strong> Developed an autonomous navigation and control system within the IPG environment using MATLAB/Simulink. The project focused on closed-loop control, sensor fusion, and path-following algorithms for high-fidelity vehicle simulations.</p>
+            
+            <p><strong>Demonstrations:</strong></p>
+            <div class="video-grid">
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/lUC1V9oIhGY" title="Dynamic Test" allowfullscreen></iframe>
+                </div>
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/cfZs11iY25M" title="Autonomous System" allowfullscreen></iframe>
+                </div>
+            </div>
+        `
+    },
+    {
+        title: "ATV Electric Vehicle (SAE E-BAJA)",
+        description: "High-performance electric off-road vehicle designed for the SAE E-BAJA competition.",
+        tags: ["E-Vehicle", "PMSM", "Lithium-ion", "SAE BAJA", "Power Electronics"],
+        image: bajaImg,
+        longDescription: `
+            <p>Designed and developed a robust electric All-Terrain Vehicle (ATV) for national-level engineering competitions. The project focused on high-efficiency powertrain design and reliable energy storage systems.</p>
+            <p><strong>Technical Specifications:</strong></p>
+            <ul>
+                <li><strong>Powertrain:</strong> 3000W Permanent Magnet Synchronous Motor (PMSM) for high torque and efficiency.</li>
+                <li><strong>Energy Storage:</strong> 120Ah-48V Lithium-ion battery pack with advanced BMS integration.</li>
+                <li><strong>Performance:</strong> Optimized for off-road durability, acceleration, and endurance in rugged terrain.</li>
+            </ul>
+        `,
+        videoLink: "https://www.youtube.com/embed/4UiKbOexBy0"
     }
 ];
 
@@ -137,7 +193,7 @@ const Projects = () => {
 
                             <h2>{selectedProject.title}</h2>
 
-                            {selectedProject.videoLink && (
+                            {selectedProject.videoLink && selectedProject.videoLink.includes('embed') ? (
                                 <div className="video-container">
                                     <iframe
                                         src={selectedProject.videoLink}
@@ -146,17 +202,30 @@ const Projects = () => {
                                         allowFullScreen
                                     ></iframe>
                                 </div>
-                            )}
+                            ) : null}
 
                             <div
                                 className="project-description"
                                 dangerouslySetInnerHTML={{ __html: selectedProject.longDescription || `<p>${selectedProject.description}</p>` }}
                             />
 
-                            <div className="modal-tags">
-                                {selectedProject.tags.map(tag => (
-                                    <span key={tag} className="tag">{tag}</span>
-                                ))}
+                            <div className="modal-footer">
+                                <div className="modal-tags">
+                                    {selectedProject.tags.map(tag => (
+                                        <span key={tag} className="tag">{tag}</span>
+                                    ))}
+                                </div>
+
+                                {selectedProject.githubLink && (
+                                    <a
+                                        href={selectedProject.githubLink}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="github-btn"
+                                    >
+                                        View on GitHub
+                                    </a>
+                                )}
                             </div>
                         </motion.div>
                     </motion.div>
@@ -164,6 +233,27 @@ const Projects = () => {
             </AnimatePresence>
 
             <style>{`
+                .modal-footer {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-top: 2rem;
+                    flex-wrap: wrap;
+                    gap: 1.5rem;
+                }
+                .github-btn {
+                    padding: 0.8rem 1.5rem;
+                    background: var(--text-primary);
+                    color: var(--bg-deep);
+                    text-decoration: none;
+                    border-radius: 8px;
+                    font-weight: 600;
+                    transition: 0.3s;
+                }
+                .github-btn:hover {
+                    opacity: 0.9;
+                    transform: translateY(-2px);
+                }
                 .projects-section {
                     padding: 8rem 10%;
                 }
@@ -246,11 +336,16 @@ const Projects = () => {
                     color: var(--text-primary);
                 }
 
+                .video-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                    gap: 1.5rem;
+                    margin-bottom: 2rem;
+                }
                 .video-container {
                     position: relative;
                     padding-bottom: 56.25%; /* 16:9 */
                     height: 0;
-                    margin-bottom: 2rem;
                     border-radius: 12px;
                     overflow: hidden;
                     border: 1px solid var(--glass-border);
