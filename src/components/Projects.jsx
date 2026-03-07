@@ -11,8 +11,29 @@ import solarVehicleImg from '../assets/autonomouse_vehicle.jpg';
 import vlmImg from '../assets/VLM.png';
 import ipgImg from '../assets/ATV_dynamic.png';
 import bajaImg from '../assets/BAJA_2026.jpg';
+import butlerBotImg from '../assets/image.png';
 
 const projectsData = [
+    {
+        title: "Autonomous Butler Robot (Behavior Tree)",
+        description: "Designed a custom Behavior Tree (BT) architecture in ROS2 Nav2 to handle 7 real-world operational cases in an autonomous service robot.",
+        tags: ["ROS2 Nav2", "Behavior Tree", "Robotics", "Autonomous"],
+        image: butlerBotImg,
+        longDescription: `
+            <p>I’m excited to share my recent robotics project: <strong>Butler Bot</strong>, where I designed a custom Behavior Tree (BT) architecture in ROS2 Nav2 to handle 7 real-world operational cases in an autonomous service robot.</p>
+            
+            <p><strong>Core BT Architecture Features:</strong></p>
+            <ul>
+                <li><strong>ReactiveFallback</strong> → High-priority monitoring (Cancel / Emergency)</li>
+                <li><strong>Sequence Nodes</strong> → Ordered task execution (GoToKitchen → Deliver → Return)</li>
+                <li><strong>Fallback Nodes</strong> → Recovery logic</li>
+                <li><strong>Loop Constructs</strong> → Multi-table delivery</li>
+                <li><strong>Condition Nodes</strong> → Order validation & confirmation checks</li>
+            </ul>
+        `,
+        githubLink: "https://lnkd.in/gvqzCmwr",
+        videoLink: "https://www.youtube.com/embed/5fbNLdbBIRM?si=LVelttTWBSmEheD1"
+    },
     {
         title: "Autonomous Sanitization Robot - ZUNO",
         description: "Autonomous indoor sanitization robot for hospitals. Implemented SLAM navigation, LiDAR integration, and collision avoidance.",

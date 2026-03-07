@@ -1,5 +1,7 @@
 import { motion } from 'framer-motion';
 import profileImg from '../assets/PROFILE_pp.jpg';
+import drdoLogo from '../assets/DRDO_logo.png';
+import spotlessLogo from '../assets/Spotless_logo.png';
 
 const About = () => {
     return (
@@ -30,13 +32,19 @@ const About = () => {
                     </p>
                     <div className="experience-list">
                         <div className="exp-item">
-                            <span className="year">2025 - Present</span>
-                            <span className="company">DRDO (Defence Research)</span>
+                            <span className="year">2025 - 2026</span>
+                            <div className="company-wrapper">
+                                <span className="company">DRDO (Defence Research)</span>
+                                <img src={drdoLogo} alt="DRDO Logo" className="company-logo" />
+                            </div>
                             <span className="detail">Computer Vision Intern</span>
                         </div>
                         <div className="exp-item">
                             <span className="year">2024 - 2025</span>
-                            <span className="company">Spotless AI Robotics</span>
+                            <div className="company-wrapper">
+                                <span className="company">Spotless AI Robotics</span>
+                                <img src={spotlessLogo} alt="Spotless AI Logo" className="company-logo" />
+                            </div>
                             <span className="detail">Robotics Intern (ROS2)</span>
                         </div>
                     </div>
@@ -99,6 +107,21 @@ const About = () => {
                 .year {
                     color: var(--accent-tech);
                     font-weight: 600;
+                }
+                .company-wrapper {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.75rem;
+                }
+                .company-logo {
+                    width: auto;
+                    height: 28px;
+                    object-fit: contain;
+                    border-radius: 4px;
+                }
+                .company {
+                    font-size: 1rem;
+                    font-weight: 500;
                 }
                 .detail {
                     display: block;
