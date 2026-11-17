@@ -138,7 +138,7 @@ const Hero = () => {
             transition={{ duration: 0.8, delay: 0.8 }}
             className="hero-status"
           >
-            <a href="#about" className="current-work"><span aria-hidden="true" />Currently at GOAT Robotics</a>
+            <a href="https://goat-robotics.com/" target="_blank" rel="noopener noreferrer" className="current-work" aria-label="Currently at GOAT Robotics — visit company website (opens in a new tab)"><span aria-hidden="true" />Currently at GOAT Robotics ↗</a>
           </Motion.div>
 
           <Motion.div

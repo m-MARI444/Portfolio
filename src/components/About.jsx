@@ -31,7 +31,7 @@ const About = () => {
                     <h3 className="role">Robotics & Mechatronics Engineer</h3>
                     <p className="description">
                         Specializing in <strong>Physical AI</strong>, <strong>Autonomous Systems</strong>, <strong>ROS2</strong>, and <strong>Computer Vision</strong>.
-                        Currently working at <strong>GOAT Robotics</strong> on autonomous mobile robots and industrial field deployment, I bridge the gap between mechanical design and intelligent software.
+                        Currently working at <a href="https://goat-robotics.com/" target="_blank" rel="noopener noreferrer" className="inline-company-link"><strong>GOAT Robotics</strong></a> on autonomous mobile robots and industrial field deployment, I bridge the gap between mechanical design and intelligent software.
                         My Physical AI work connects AI reasoning, visual perception, and real-world robot manipulation through hands-on pick-and-place experiments.
                     </p>
                     <div className="education-card">
@@ -43,26 +43,29 @@ const About = () => {
                     <div className="experience-list">
                         <div className="exp-item current-experience">
                             <span className="year">2026–Present</span>
-                            <div className="company-wrapper">
+                            <a href="https://goat-robotics.com/" target="_blank" rel="noopener noreferrer" className="company-wrapper company-link" aria-label="Visit GOAT Robotics website (opens in a new tab)">
                                 <img src={goatLogo} alt="GOAT Robotics logo" className="company-logo goat-logo" loading="lazy" width="48" height="48" />
                                 <span className="company">GOAT Robotics <span className="current-badge">Current</span></span>
-                            </div>
+                                <span className="external-link-mark" aria-hidden="true">↗</span>
+                            </a>
                             <span className="detail">Robotic Engineer</span>
                         </div>
                         <div className="exp-item">
                             <span className="year">Sep 2025–<br />Feb 2026</span>
-                            <div className="company-wrapper">
+                            <a href="https://www.drdo.gov.in/drdo/" target="_blank" rel="noopener noreferrer" className="company-wrapper company-link" aria-label="Visit DRDO website (opens in a new tab)">
                                 <span className="company">DRDO (Defence Research)</span>
                                 <img src={drdoLogo} alt="DRDO Logo" className="company-logo" />
-                            </div>
+                                <span className="external-link-mark" aria-hidden="true">↗</span>
+                            </a>
                             <span className="detail">Computer Vision Intern</span>
                         </div>
                         <div className="exp-item">
                             <span className="year">Nov 2024–<br />Apr 2025</span>
-                            <div className="company-wrapper">
+                            <a href="https://www.spotless.ai/" target="_blank" rel="noopener noreferrer" className="company-wrapper company-link" aria-label="Visit Spotless AI Robotics website (opens in a new tab)">
                                 <span className="company">Spotless AI Robotics</span>
                                 <img src={spotlessLogo} alt="Spotless AI Logo" className="company-logo" />
-                            </div>
+                                <span className="external-link-mark" aria-hidden="true">↗</span>
+                            </a>
                             <span className="detail">Robotics Intern (ROS2)</span>
                         </div>
                     </div>
@@ -133,6 +136,17 @@ const About = () => {
                     align-items: center;
                     gap: 0.75rem;
                 }
+                .company-link { width: fit-content; max-width: 100%; }
+                .company-link .company, .inline-company-link {
+                    transition: color 0.2s ease;
+                }
+                .company-link:hover .company, .company-link:focus-visible .company,
+                .inline-company-link:hover, .inline-company-link:focus-visible {
+                    color: var(--accent-tech);
+                    text-decoration: underline;
+                    text-underline-offset: 4px;
+                }
+                .external-link-mark { color: var(--text-secondary); font-size: 0.85rem; }
                 .company-logo {
                     width: auto;
                     height: 28px;
