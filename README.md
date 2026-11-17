@@ -29,6 +29,10 @@ The current résumé is `src/assets/Marieswaran_M_Resume.pdf`. Replace that file
 
 The Physical AI project uses `src/assets/AI_arm.jpeg` and links to https://lnkd.in/p/ghHiMqzE. The GOAT Robotics logo is `src/assets/goat-robotics-logo-512.png`.
 
+Achievement issuer logos are stored in `src/assets/achievements/`, with their original download URLs in `SOURCES.md`. The timeline includes the SIH 2024 winner, SIH 2025 finalist, SAE E-BAJA 2025, and ROS/SLAM workshop entries.
+
+Desktop text scales gently with viewport width in `src/index.css`, while mobile keeps a 16px base. The hero canvas in `src/components/Hero.jsx` displays the top 92.5% of each animation frame to crop out the bottom Veo branding strip.
+
 ## Check and publish
 
 From a Git checkout with authenticated write access to `m-MARI444/Portfolio`:

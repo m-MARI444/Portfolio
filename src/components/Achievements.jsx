@@ -1,6 +1,12 @@
 import { motion as Motion } from 'framer-motion';
+import { FaAward } from 'react-icons/fa';
+import aicteLogo from '../assets/achievements/aicte.jpg';
+import micLogo from '../assets/achievements/mic.png';
+import saeLogo from '../assets/achievements/saeindia.png';
+import asietLogo from '../assets/achievements/asiet.png';
+import prolificLogo from '../assets/achievements/prolific.png';
 
-const TimelineItem = ({ year, title, org, delay }) => (
+const TimelineItem = ({ year, title, org, logo, logoAlt, logoStyle = 'full', delay }) => (
     <Motion.div
         initial={{ opacity: 0, x: -20 }}
         whileInView={{ opacity: 1, x: 0 }}
@@ -9,6 +15,9 @@ const TimelineItem = ({ year, title, org, delay }) => (
         className="timeline-item"
     >
         <div className="timeline-dot"></div>
+        <div className={`achievement-logo logo-${logoStyle} ${logo ? 'has-logo' : ''}`}>
+            {logo ? <span><img src={logo} alt={logoAlt} loading="lazy" decoding="async" /></span> : <FaAward aria-hidden="true" />}
+        </div>
         <div className="timeline-content">
             <span className="year">{year}</span>
             <h3>{title}</h3>
@@ -26,24 +35,69 @@ const Achievements = () => {
                     year="2026"
                     title="SAE E-BAJA National Level Event"
                     org="NATRAX Indoor, MP"
+                    logo={saeLogo}
+                    logoAlt="SAEINDIA logo"
                     delay={0}
+                />
+                <TimelineItem
+                    year="2025"
+                    title="Smart India Hackathon 2025 · Finalist"
+                    org="AICTE · Autonomous Sanitization Robot – ZUNO"
+                    logo={aicteLogo}
+                    logoAlt="AICTE logo"
+                    logoStyle="square"
+                    delay={0.05}
+                />
+                <TimelineItem
+                    year="2025"
+                    title="SAE E-BAJA 2025"
+                    org="SAEINDIA · National-level electric ATV competition"
+                    logo={saeLogo}
+                    logoAlt="SAEINDIA logo"
+                    delay={0.1}
                 />
                 <TimelineItem
                     year="2025"
                     title="APF (AICTE Productization Fellowship) and Yukti-2025"
                     org="For innovative project"
+                    logo={aicteLogo}
+                    logoAlt="AICTE logo"
+                    logoStyle="square"
                     delay={0.1}
                 />
                 <TimelineItem
                     year="2025"
                     title="IIC Regional Meet 2025"
                     org="Organized by MoE's Innovation Cell & AICTE at PSG College of Arts and Science, Coimbatore"
+                    logo={micLogo}
+                    logoAlt="Ministry of Education Innovation Cell logo"
+                    logoStyle="symbol"
                     delay={0.2}
+                />
+                <TimelineItem
+                    year="2024"
+                    title="Smart India Hackathon 2024 · Winner"
+                    org="MoE's Innovation Cell · Robotic Borewell Rescue Kit"
+                    logo={micLogo}
+                    logoAlt="Ministry of Education Innovation Cell logo"
+                    logoStyle="symbol"
+                    delay={0.1}
+                />
+                <TimelineItem
+                    year="2024"
+                    title="National-Level Workshop on ROS & SLAM Map Building"
+                    org="The Robotics Society ASIET · July 2024"
+                    logo={asietLogo}
+                    logoAlt="Adi Shankara Institute of Engineering and Technology logo"
+                    logoStyle="asiet"
+                    delay={0.1}
                 />
                 <TimelineItem
                     year="2024"
                     title="Value-Added Course in Industrial Automation"
                     org="Conducted by Prolific Pvt. Ltd."
+                    logo={prolificLogo}
+                    logoAlt="Prolific logo"
                     delay={0.3}
                 />
                 <TimelineItem
@@ -88,7 +142,7 @@ const Achievements = () => {
                 }
                 .timeline {
                     position: relative;
-                    max-width: 800px;
+                    max-width: 960px;
                     margin: 0 auto;
                     border-left: 2px solid var(--glass-border);
                     padding-left: 2rem;
@@ -96,7 +150,37 @@ const Achievements = () => {
                 .timeline-item {
                     margin-bottom: 3rem;
                     position: relative;
+                    display: grid;
+                    grid-template-columns: 80px minmax(0, 1fr);
+                    gap: 1.25rem;
+                    align-items: start;
+                    padding-bottom: 2rem;
+                    border-bottom: 1px solid var(--glass-border);
                 }
+                .timeline-item:last-child { border-bottom: none; margin-bottom: 0; }
+                .achievement-logo {
+                    width: 80px;
+                    height: 64px;
+                    display: grid;
+                    place-items: center;
+                    border-radius: 10px;
+                    border: 1px solid var(--glass-border);
+                    color: var(--accent-tech);
+                    background: rgba(59, 130, 246, 0.05);
+                    font-size: 1.5rem;
+                    overflow: hidden;
+                }
+                .achievement-logo.has-logo { background: white; padding: 5px; }
+                .achievement-logo > span { display: block; width: 100%; height: 100%; overflow: hidden; }
+                .achievement-logo img { width: 100%; height: 100%; object-fit: contain; }
+                .achievement-logo.logo-symbol > span, .achievement-logo.logo-asiet > span, .achievement-logo.logo-square > span {
+                    width: auto;
+                    max-width: none;
+                    aspect-ratio: 1;
+                }
+                .achievement-logo.logo-asiet > span { aspect-ratio: 0.88; }
+                .achievement-logo.logo-symbol img, .achievement-logo.logo-asiet img { display: block; width: auto; max-width: none; }
+                .achievement-logo.logo-square img { object-fit: cover; }
                 .timeline-dot {
                     position: absolute;
                     left: -2.6rem;
@@ -120,6 +204,14 @@ const Achievements = () => {
                 }
                 .timeline-content p {
                     color: var(--text-secondary);
+                }
+                @media (max-width: 768px) {
+                    .timeline { padding-left: 1.5rem; }
+                    .timeline-item { grid-template-columns: 56px minmax(0, 1fr); gap: 0.85rem; margin-bottom: 2rem; }
+                    .achievement-logo { width: 56px; height: 56px; }
+                    .timeline-dot { left: -2.1rem; }
+                    .timeline-content h3 { font-size: 1.1rem; line-height: 1.45; }
+                    .timeline-content p { font-size: 0.9rem; }
                 }
             `}</style>
         </section>

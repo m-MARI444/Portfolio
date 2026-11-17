@@ -29,6 +29,7 @@
 }
 
 html {
+  font-size: clamp(16px, 0.86vw, 21.333px);
   scroll-padding-top: 96px;
 }
 

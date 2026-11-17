@@ -71,17 +71,19 @@ const Hero = () => {
         canvas.height = pixelHeight;
       }
       context.setTransform(dpr, 0, 0, dpr, 0, 0);
-      const scale = Math.max(width / first.width, height / first.height);
+      // Keep the bottom branding strip outside the displayed background.
+      const sourceHeight = Math.floor(first.height * 0.925);
+      const scale = Math.max(width / first.width, height / sourceHeight);
       const drawWidth = first.width * scale;
-      const drawHeight = first.height * scale;
+      const drawHeight = sourceHeight * scale;
       const x = (width - drawWidth) / 2;
       const y = (height - drawHeight) / 2;
       context.globalAlpha = 1;
-      context.drawImage(first, x, y, drawWidth, drawHeight);
+      context.drawImage(first, 0, 0, first.width, sourceHeight, x, y, drawWidth, drawHeight);
       if (first !== second) {
         const fraction = progress - index;
         context.globalAlpha = fraction * fraction * (3 - 2 * fraction);
-        context.drawImage(second, x, y, drawWidth, drawHeight);
+        context.drawImage(second, 0, 0, second.width, Math.floor(second.height * 0.925), x, y, drawWidth, drawHeight);
         context.globalAlpha = 1;
       }
     };

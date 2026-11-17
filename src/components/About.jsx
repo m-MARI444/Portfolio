@@ -30,14 +30,15 @@ const About = () => {
                     <h2 className="section-title">About Me</h2>
                     <h3 className="role">Robotics & Mechatronics Engineer</h3>
                     <p className="description">
-                        Specializing in <strong>Autonomous Systems</strong>, <strong>ROS2</strong>, and <strong>Computer Vision</strong>.
+                        Specializing in <strong>Physical AI</strong>, <strong>Autonomous Systems</strong>, <strong>ROS2</strong>, and <strong>Computer Vision</strong>.
                         Currently working at <strong>GOAT Robotics</strong> on autonomous mobile robots and industrial field deployment, I bridge the gap between mechanical design and intelligent software.
+                        My Physical AI work connects AI reasoning, visual perception, and real-world robot manipulation through hands-on pick-and-place experiments.
                     </p>
                     <div className="education-card">
                         <span className="education-label">Education · 2022–2026</span>
                         <h4>B.E. (Honours) in Mechatronics Engineering</h4>
                         <p>Hindusthan College of Engineering and Technology</p>
-                        <span className="education-grade">CGPA 8.94 / 10</span>
+                        <span className="education-grade">CGPA 8.78 / 10</span>
                     </div>
                     <div className="experience-list">
                         <div className="exp-item current-experience">
@@ -46,7 +47,7 @@ const About = () => {
                                 <img src={goatLogo} alt="GOAT Robotics logo" className="company-logo goat-logo" loading="lazy" width="48" height="48" />
                                 <span className="company">GOAT Robotics <span className="current-badge">Current</span></span>
                             </div>
-                            <span className="detail">AMR engineering & field deployment · ROS2, Nav2, Linux</span>
+                            <span className="detail">Robotic Engineer</span>
                         </div>
                         <div className="exp-item">
                             <span className="year">Sep 2025–<br />Feb 2026</span>
@@ -73,6 +74,7 @@ const About = () => {
                     padding: 8rem 10%;
                     background: var(--bg-surface);
                     color: var(--text-primary);
+                    overflow: clip;
                 }
                 .about-section .container {
                     display: grid;
