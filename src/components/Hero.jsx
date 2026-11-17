@@ -1,11 +1,12 @@
-import { useRef, useState, useEffect, useMemo } from 'react';
-import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
-import resumePdf from '../assets/Marieswaran M - Resume.pdf';
+import { useRef, useState, useEffect } from 'react';
+import { motion as Motion, useScroll, useTransform, useSpring, useReducedMotion } from 'framer-motion';
+import resumePdf from '../assets/Marieswaran_M_Resume.pdf';
 
 const Hero = () => {
   const containerRef = useRef(null);
   const canvasRef = useRef(null);
   const [images, setImages] = useState([]);
+  const reducedMotion = useReducedMotion();
 
   // Frame settings: 006 to 024
   const frameCount = 19;
@@ -26,126 +27,119 @@ const Hero = () => {
   const frameIndex = useTransform(smoothProgress, [0, 1], [0, frameCount - 1]);
 
   useEffect(() => {
+    let active = true;
     const loadImages = async () => {
-      const loadedImages = [];
       const promises = [];
-      for (let i = 0; i < frameCount; i++) {
+      for (let i = 0; i < (reducedMotion ? 1 : frameCount); i++) {
         const frameNum = String(startFrame + i).padStart(3, '0');
-        const img = new Image();
-        img.src = new URL(`../assets/motion/ezgif-frame-${frameNum}.jpg`, import.meta.url).href;
         promises.push(new Promise((resolve) => {
+          const img = new Image();
           img.onload = () => resolve(img);
+          img.onerror = () => resolve(null);
+          img.src = new URL(`../assets/motion/ezgif-frame-${frameNum}.jpg`, import.meta.url).href;
         }));
-        loadedImages.push(img);
       }
-      await Promise.all(promises);
-      setImages(loadedImages);
+      const loadedImages = await Promise.all(promises);
+      if (active) setImages(loadedImages);
     };
     loadImages();
-  }, []);
+    return () => { active = false; };
+  }, [reducedMotion]);
 
   useEffect(() => {
-    let requestRef;
-    let lastTime = performance.now();
-    let currentVal = frameIndex.get();
+    const canvas = canvasRef.current;
+    const fallback = images.find(Boolean);
+    if (!canvas || !fallback) return;
+    const context = canvas.getContext('2d', { alpha: false });
+    if (!context) return;
+    let animationFrame;
+    let visible = true;
 
-    const render = (time) => {
-      const targetVal = frameIndex.get();
-      const dt = Math.min(time - lastTime, 100);
-      lastTime = time;
-
-      // Calculate velocity for adaptive blending
-      const velocity = Math.abs(targetVal - currentVal);
-
-      // Sub-pixel LERP for infinite FPS feel
-      currentVal += (targetVal - currentVal) * 0.2;
-
-      const idx1 = Math.floor(currentVal);
-      const idx2 = Math.min(idx1 + 1, frameCount - 1);
-      const fraction = currentVal - idx1;
-
-      if (images[idx1] && canvasRef.current) {
-        const canvas = canvasRef.current;
-        const context = canvas.getContext('2d', { alpha: false });
-        const dpr = window.devicePixelRatio || 1;
-        const width = window.innerWidth;
-        const height = window.innerHeight;
-
-        if (canvas.width !== width * dpr || canvas.height !== height * dpr) {
-          canvas.width = width * dpr;
-          canvas.height = height * dpr;
-          context.scale(dpr, dpr);
-        }
-
-        const img1 = images[idx1];
-        const img2 = images[idx2];
-        const canvasAspect = width / height;
-        const imgAspect = img1.width / img1.height;
-
-        let drawWidth, drawHeight, offsetX, offsetY;
-        if (canvasAspect > imgAspect) {
-          drawWidth = width;
-          drawHeight = width / imgAspect;
-          offsetX = 0;
-          offsetY = (height - drawHeight) / 2;
-        } else {
-          drawWidth = height * imgAspect;
-          drawHeight = height;
-          offsetX = (width - drawWidth) / 2;
-          offsetY = 0;
-        }
-
-        // 1. Draw solid primary frame
-        context.globalAlpha = 1;
-        context.drawImage(img1, offsetX, offsetY, drawWidth, drawHeight);
-
-        // 2. Adaptive Blending:
-        // Use velocity to decide if we should blend. 
-        // If moving slowly, keep it sharp. If moving fast, blend more for fluidity.
-        const blendThreshold = 0.05; // Tight window for slow scrolls
-        if (idx1 !== idx2 && fraction > blendThreshold) {
-          // Dynamic alpha based on velocity and distance
-          // As velocity increases, we allow a wider blending window
-          const adaptiveWeight = Math.min(1, velocity * 10);
-          const easedFraction = fraction * fraction * (3 - 2 * fraction);
-
-          context.globalAlpha = easedFraction * adaptiveWeight;
-          context.drawImage(img2, offsetX, offsetY, drawWidth, drawHeight);
-        }
+    const draw = () => {
+      if (!visible) return;
+      const progress = reducedMotion ? 0 : Math.max(0, Math.min(frameCount - 1, frameIndex.get()));
+      const index = Math.floor(progress);
+      const first = images[index] || fallback;
+      const second = images[Math.min(index + 1, frameCount - 1)] || first;
+      const width = canvas.clientWidth;
+      const height = canvas.clientHeight;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const pixelWidth = Math.round(width * dpr);
+      const pixelHeight = Math.round(height * dpr);
+      if (canvas.width !== pixelWidth || canvas.height !== pixelHeight) {
+        canvas.width = pixelWidth;
+        canvas.height = pixelHeight;
       }
-
-      requestRef = requestAnimationFrame(render);
+      context.setTransform(dpr, 0, 0, dpr, 0, 0);
+      const scale = Math.max(width / first.width, height / first.height);
+      const drawWidth = first.width * scale;
+      const drawHeight = first.height * scale;
+      const x = (width - drawWidth) / 2;
+      const y = (height - drawHeight) / 2;
+      context.globalAlpha = 1;
+      context.drawImage(first, x, y, drawWidth, drawHeight);
+      if (first !== second) {
+        const fraction = progress - index;
+        context.globalAlpha = fraction * fraction * (3 - 2 * fraction);
+        context.drawImage(second, x, y, drawWidth, drawHeight);
+        context.globalAlpha = 1;
+      }
+    };
+    const scheduleDraw = () => {
+      cancelAnimationFrame(animationFrame);
+      animationFrame = requestAnimationFrame(draw);
     };
 
-    requestRef = requestAnimationFrame(render);
-    return () => cancelAnimationFrame(requestRef);
-  }, [images, frameIndex]);
+    const unsubscribe = reducedMotion ? () => {} : frameIndex.on('change', scheduleDraw);
+    const observer = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+      if (visible) scheduleDraw();
+    });
+    observer.observe(canvas);
+    window.addEventListener('resize', scheduleDraw, { passive: true });
+    scheduleDraw();
+    return () => {
+      cancelAnimationFrame(animationFrame);
+      unsubscribe();
+      observer.disconnect();
+      window.removeEventListener('resize', scheduleDraw);
+    };
+  }, [images, frameIndex, reducedMotion]);
 
   return (
-    <section ref={containerRef} className="hero-container">
+    <section id="home" ref={containerRef} className="hero-container">
       <div className="hero-sticky">
-        <canvas ref={canvasRef} className="hero-canvas" />
+        <canvas ref={canvasRef} className="hero-canvas" aria-hidden="true" />
         <div className="hero-overlay"></div>
 
         <div className="hero-content">
-          <motion.p
+          <Motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
             className="subtitle"
           >
             Robotics & Mechatronics Engineer
-          </motion.p>
+          </Motion.p>
 
-          <motion.h1
+          <Motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
             Autonomy in <br /> <span className="highlight">Motion</span>
-          </motion.h1>
+          </Motion.h1>
 
-          <motion.div
+          <Motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.8 }}
+            className="hero-status"
+          >
+            <a href="#about" className="current-work"><span aria-hidden="true" />Currently at GOAT Robotics</a>
+          </Motion.div>
+
+          <Motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.8 }}
@@ -153,14 +147,14 @@ const Hero = () => {
           >
             <a href="#projects" className="btn-primary">View Projects</a>
             <a href={resumePdf} download="Marieswaran_M_Resume.pdf" className="btn-secondary">Download Resume</a>
-          </motion.div>
+          </Motion.div>
         </div>
       </div>
 
       <style>{`
         .hero-container {
           position: relative;
-          height: 250vh; /* Optimal balance of scroll depth and speed */
+          height: 220vh;
           background: #050505;
         }
 
@@ -169,6 +163,7 @@ const Hero = () => {
           top: 0;
           left: 0;
           height: 100vh;
+          height: 100svh;
           width: 100%;
           display: flex;
           align-items: center;
@@ -231,6 +226,25 @@ const Hero = () => {
           display: flex;
           gap: 1.5rem;
         }
+        .current-work {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.65rem;
+          color: #cbd5e1;
+          font-size: 0.85rem;
+          padding: 0.55rem 0.9rem;
+          background: rgba(255, 255, 255, 0.04);
+          border: 1px solid var(--glass-border);
+          border-radius: 100px;
+          margin-bottom: 1.75rem;
+        }
+        .current-work span {
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background: #86efac;
+          box-shadow: 0 0 10px rgba(134, 239, 172, 0.35);
+        }
 
         .btn-primary {
           padding: 1.2rem 2.5rem;
@@ -281,6 +295,10 @@ const Hero = () => {
             width: 100%;
             text-align: center;
           }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .hero-container { height: 100svh; }
+          .hero-sticky { position: relative; }
         }
       `}</style>
     </section>

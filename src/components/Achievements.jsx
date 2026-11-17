@@ -1,9 +1,10 @@
-import { motion } from 'framer-motion';
+import { motion as Motion } from 'framer-motion';
 
 const TimelineItem = ({ year, title, org, delay }) => (
-    <motion.div
+    <Motion.div
         initial={{ opacity: 0, x: -20 }}
         whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true, amount: 0.2 }}
         transition={{ duration: 0.5, delay }}
         className="timeline-item"
     >
@@ -13,7 +14,7 @@ const TimelineItem = ({ year, title, org, delay }) => (
             <h3>{title}</h3>
             <p>{org}</p>
         </div>
-    </motion.div>
+    </Motion.div>
 );
 
 const Achievements = () => {
@@ -80,6 +81,10 @@ const Achievements = () => {
             <style>{`
                 .achievements-section {
                     padding: 8rem 10%;
+                }
+                .achievements-section .section-title {
+                    font-size: 2.5rem;
+                    margin-bottom: 4rem;
                 }
                 .timeline {
                     position: relative;

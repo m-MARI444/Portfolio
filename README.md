@@ -1,16 +1,45 @@
-# React + Vite
+# Marieswaran M — Robotics Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React + Vite portfolio with Framer Motion animations, Lenis scrolling, and GitHub Pages hosting.
 
-Currently, two official plugins are available:
+Live site: https://m-mari444.github.io/Portfolio/
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Run locally
 
-## React Compiler
+```sh
+npm ci
+npm run dev
+```
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Open the `/Portfolio/` URL printed by Vite. The base path in `vite.config.js` matches the GitHub Pages repository name.
 
-## Expanding the ESLint configuration
+## Where to update content
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+| Content | File |
+| --- | --- |
+| Current GOAT Robotics role, company logo, education and experience | `src/components/About.jsx` |
+| Hero headline, current employer badge and résumé download | `src/components/Hero.jsx` |
+| Project cards, categories, images, descriptions and links | `projectsData` in `src/components/Projects.jsx` |
+| Skills | `src/components/Skills.jsx` |
+| Achievements | `src/components/Achievements.jsx` |
+| Email, phone and social links | `src/components/Contact.jsx` and `src/components/Navbar.jsx` |
+| Shared colors, spacing and accessibility styles | `src/index.css` |
+
+The current résumé is `src/assets/Marieswaran_M_Resume.pdf`. Replace that file with the same name to update the download, then rebuild and deploy. Vite generates a new asset URL when the PDF changes, so the deployed site serves the new file.
+
+The Physical AI project uses `src/assets/AI_arm.jpeg` and links to https://lnkd.in/p/ghHiMqzE. The GOAT Robotics logo is `src/assets/goat-robotics-logo-512.png`.
+
+## Check and publish
+
+From a Git checkout with authenticated write access to `m-MARI444/Portfolio`:
+
+```sh
+npm run lint
+npm run build
+git add src public index.html README.md
+git commit -m "Update portfolio content"
+git push origin main
+npm run deploy
+```
+
+`npm run deploy` rebuilds the site and publishes `dist/` to the `gh-pages` branch. GitHub Pages must serve that branch from `/ (root)`. A push to `main` alone does not publish the site. GitHub Pages can take a few minutes to serve a new deployment.

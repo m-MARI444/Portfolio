@@ -16,11 +16,11 @@ const Contact = () => {
                         <FaPhone className="icon" />
                         <span>+91 63741 28028</span>
                     </a>
-                    <a href="https://github.com/m-MARI444" target="_blank" className="contact-card">
+                    <a href="https://github.com/m-MARI444" target="_blank" rel="noopener noreferrer" className="contact-card">
                         <FaGithub className="icon" />
                         <span>github.com/m-MARI444</span>
                     </a>
-                    <a href="https://www.linkedin.com/in/marieswaran-m-b49678316" target="_blank" className="contact-card">
+                    <a href="https://www.linkedin.com/in/marieswaran-m-b49678316" target="_blank" rel="noopener noreferrer" className="contact-card">
                         <FaLinkedin className="icon" />
                         <span>linkedin.com/in/marieswaran-m</span>
                     </a>
@@ -70,12 +70,22 @@ const Contact = () => {
                 }
                 .contact-card .icon {
                     font-size: 1.5rem;
+                    flex-shrink: 0;
+                }
+                .contact-card span {
+                    min-width: 0;
+                    overflow-wrap: anywhere;
                 }
                 .footer {
                     border-top: 1px solid var(--glass-border);
                     padding-top: 2rem;
                     color: var(--text-muted);
                     font-size: 0.9rem;
+                }
+                @media (max-width: 768px) {
+                    .contact-container h2 { font-size: 2.25rem; }
+                    .contact-links { gap: 1rem; margin-bottom: 3rem; }
+                    .contact-card { width: 100%; padding: 1.1rem; text-align: left; }
                 }
             `}</style>
         </section>

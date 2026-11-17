@@ -1,10 +1,11 @@
-import { motion } from 'framer-motion';
-import { FaCode, FaRobot, FaLayerGroup, FaDesktop, FaCarBattery } from 'react-icons/fa';
+import { motion as Motion } from 'framer-motion';
+import { FaCode, FaRobot, FaDesktop, FaCarBattery } from 'react-icons/fa';
 
 const SkillCategory = ({ title, icon, skills, delay }) => (
-    <motion.div
+    <Motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.15 }}
         transition={{ duration: 0.5, delay }}
         className="skill-card"
     >
@@ -13,7 +14,7 @@ const SkillCategory = ({ title, icon, skills, delay }) => (
         <ul className="skill-list">
             {skills.map(skill => <li key={skill}>{skill}</li>)}
         </ul>
-    </motion.div>
+    </Motion.div>
 );
 
 const Skills = () => {
@@ -53,13 +54,13 @@ const Skills = () => {
                     background: var(--bg-surface);
                     text-align: center;
                 }
-                .section-title {
+                .skills-section .section-title {
                     font-size: 2.5rem;
                     margin-bottom: 4rem;
                 }
                 .skills-grid {
                     display: grid;
-                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
                     gap: 2rem;
                 }
                 .skill-card {

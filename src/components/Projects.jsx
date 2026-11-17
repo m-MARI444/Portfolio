@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useEffect, useRef } from 'react';
+import { motion as Motion, AnimatePresence } from 'framer-motion';
 import { FaTimes } from 'react-icons/fa';
 import ProjectCard from './ProjectCard';
 import zunoImg from '../assets/zuno.png';
@@ -12,10 +12,27 @@ import vlmImg from '../assets/VLM.png';
 import ipgImg from '../assets/ATV_dynamic.png';
 import bajaImg from '../assets/BAJA_2026.jpg';
 import butlerBotImg from '../assets/image.png';
+import aiArmImg from '../assets/AI_arm.jpeg';
 
 const projectsData = [
     {
+        title: "Physical AI: Autonomous Pick-and-Place",
+        category: "Manipulators",
+        description: "An autonomous SO-ARM101 pick-and-place experiment connecting AI reasoning, camera observations, joint control, and grasp feedback on a real robot arm.",
+        tags: ["Physical AI", "SO-ARM101", "Computer Vision", "Robot Learning"],
+        image: aiArmImg,
+        imagePosition: "center 80%",
+        longDescription: `
+            <p>Exploring Physical AI through an autonomous pick-and-place setup with the SO-ARM101 robot arm. A Canon 200D side camera and a wrist camera provide complementary views of the workspace.</p>
+            <p>The experiment connects AI reasoning with camera observations, joint control, grasping, and feedback. The robot completed a pickup task without training a task-specific model.</p>
+            <p>Next steps focus on faster execution, more reliable grasps, and adapting when objects move.</p>
+        `,
+        projectLink: "https://lnkd.in/p/ghHiMqzE",
+        projectLinkLabel: "View on LinkedIn"
+    },
+    {
         title: "Autonomous Butler Robot (Behavior Tree)",
+        category: "Autonomous",
         description: "Designed a custom Behavior Tree (BT) architecture in ROS2 Nav2 to handle 7 real-world operational cases in an autonomous service robot.",
         tags: ["ROS2 Nav2", "Behavior Tree", "Robotics", "Autonomous"],
         image: butlerBotImg,
@@ -36,6 +53,7 @@ const projectsData = [
     },
     {
         title: "Autonomous Sanitization Robot - ZUNO",
+        category: "Autonomous",
         description: "Autonomous indoor sanitization robot for hospitals. Implemented SLAM navigation, LiDAR integration, and collision avoidance.",
         tags: ["ROS2", "SLAM", "LiDAR", "Path Planning"],
         image: zunoImg,
@@ -50,6 +68,7 @@ const projectsData = [
     },
     {
         title: "6-DOF Robotic Arm Manipulator",
+        category: "Manipulators",
         description: "Implemented Inverse Kinematics (IK) and real-time servoing. Path planning with MoveIt2 and OMPL.",
         tags: ["ROS2", "MoveIt2", "Gazebo", "Kinematics"],
         image: explodedImg,
@@ -57,6 +76,7 @@ const projectsData = [
     },
     {
         title: "Logistic Cobot System",
+        category: "Manipulators",
         description: "Dual-robot warehouse automation with a sorting RoboArm and mobile RoverBot using coordinated workflows.",
         tags: ["Multi-Robot", "AMCL", "Automation", "Python"],
         image: cobotImg,
@@ -88,6 +108,7 @@ const projectsData = [
     },
     {
         title: "Robotic Borewell Rescue Kit",
+        category: "Manipulators",
         description: "Award-winning robotic rescue solution. Designed electronics architecture and motor control units.",
         tags: ["Embedded", "Electronics", "Control", "SIH Winner"],
         image: borewellImg,
@@ -95,6 +116,7 @@ const projectsData = [
     },
     {
         title: "Isaac Sim & Lab Simulation",
+        category: "Simulations",
         description: "Developing autonomous robots in Isaac Sim using NVIDIA Omniverse and GPU-accelerated workflows. Integrated with ROS2 for realistic sensor simulation and reinforcement learning environments.",
         tags: ["NVIDIA Omniverse", "ROS2", "Isaac Lab", "Python"],
         image: isaacSimImg,
@@ -102,12 +124,14 @@ const projectsData = [
     },
     {
         title: "Autonomous Solar Vehicle",
+        category: "Autonomous",
         description: "Designed and fabricated a 3-wheeled solar vehicle achieving 25km/hr without external batteries. Competed in National Solar Vehicle Championship & MIT Manipal, featuring Level 2 autonomous navigation capabilities.",
         tags: ["Solar Power", "Autonomous Navigation", "Fabrication", "L2 Autonomy"],
         image: solarVehicleImg
     },
     {
         title: "Semantic Event Detection via CLIP-Motion Fusion",
+        category: "Autonomous",
         description: "A real-time, zero-shot video event detection system using OpenAI's CLIP and quantized PyTorch for detecting 'Person Walking', 'Vehicle Stopping', and 'Crowded Scene'.",
         tags: ["VLM", "OpenAI CLIP", "PyTorch", "OpenCV", "Zero-Shot"],
         image: vlmImg,
@@ -124,6 +148,7 @@ const projectsData = [
     },
     {
         title: "IPG Vehicle Dynamics & Autonomous System",
+        category: "Simulations",
         description: "Advanced vehicle dynamics simulation and autonomous system development using IPG CarMaker and MATLAB/Simulink.",
         tags: ["IPG CarMaker", "MATLAB", "Simulink", "Vehicle Dynamics", "Autonomous"],
         image: ipgImg,
@@ -144,6 +169,7 @@ const projectsData = [
     },
     {
         title: "ATV Electric Vehicle (SAE E-BAJA)",
+        category: "Autonomous",
         description: "High-performance electric off-road vehicle designed for the SAE E-BAJA competition.",
         tags: ["E-Vehicle", "PMSM", "Lithium-ion", "SAE BAJA", "Power Electronics"],
         image: bajaImg,
@@ -162,29 +188,68 @@ const projectsData = [
 
 const Projects = () => {
     const [selectedProject, setSelectedProject] = useState(null);
+    const [activeCategory, setActiveCategory] = useState('All');
+    const closeButtonRef = useRef(null);
+    const filteredProjects = activeCategory === 'All'
+        ? projectsData
+        : projectsData.filter(project => project.category === activeCategory);
+
+    useEffect(() => {
+        if (!selectedProject) return;
+        const previousFocus = document.activeElement;
+        const previousOverflow = document.body.style.overflow;
+        document.body.style.overflow = 'hidden';
+        closeButtonRef.current?.focus();
+        const handleKeyDown = (event) => {
+            if (event.key === 'Escape') setSelectedProject(null);
+            if (event.key !== 'Tab') return;
+            const dialog = closeButtonRef.current?.closest('[role="dialog"]');
+            const focusable = dialog?.querySelectorAll('a[href], button, iframe, [tabindex="0"]');
+            if (!focusable?.length) return;
+            const first = focusable[0];
+            const last = focusable[focusable.length - 1];
+            if (event.shiftKey && document.activeElement === first) {
+                event.preventDefault();
+                last.focus();
+            } else if (!event.shiftKey && document.activeElement === last) {
+                event.preventDefault();
+                first.focus();
+            }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => {
+            document.body.style.overflow = previousOverflow;
+            window.removeEventListener('keydown', handleKeyDown);
+            previousFocus?.focus({ preventScroll: true });
+        };
+    }, [selectedProject]);
 
     return (
         <section id="projects" className="projects-section">
             <div className="header">
-                <motion.h2
+                <Motion.h2
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                 >
                     Featured Projects
-                </motion.h2>
-                <div className="categories">
-                    <span className="active">All</span>
-                    <span>Autonomous</span>
-                    <span>Manipulators</span>
-                    <span>Simulations</span>
+                </Motion.h2>
+                <div className="categories" role="group" aria-label="Filter projects">
+                    {['All', 'Autonomous', 'Manipulators', 'Simulations'].map(category => (
+                        <button
+                            key={category}
+                            className={activeCategory === category ? 'active' : ''}
+                            aria-pressed={activeCategory === category}
+                            onClick={() => setActiveCategory(category)}
+                        >{category}</button>
+                    ))}
                 </div>
             </div>
 
             <div className="project-grid">
-                {projectsData.map((project, index) => (
+                {filteredProjects.map((project, index) => (
                     <ProjectCard
-                        key={index}
+                        key={project.title}
                         project={project}
                         index={index}
                         onOpen={setSelectedProject}
@@ -194,25 +259,33 @@ const Projects = () => {
 
             <AnimatePresence>
                 {selectedProject && (
-                    <motion.div
+                    <Motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         className="modal-backdrop"
+                        data-lenis-prevent
                         onClick={() => setSelectedProject(null)}
                     >
-                        <motion.div
-                            initial={{ scale: 0.8, opacity: 0 }}
+                        <Motion.div
+                            initial={{ scale: 0.96, opacity: 0, y: 16 }}
                             animate={{ scale: 1, opacity: 1 }}
-                            exit={{ scale: 0.8, opacity: 0 }}
+                            exit={{ scale: 0.96, opacity: 0 }}
                             className="modal-content"
+                            role="dialog"
+                            aria-modal="true"
+                            aria-labelledby="project-dialog-title"
                             onClick={e => e.stopPropagation()}
                         >
-                            <button className="close-btn" onClick={() => setSelectedProject(null)}>
+                            <button ref={closeButtonRef} className="close-btn" aria-label="Close project details" onClick={() => setSelectedProject(null)}>
                                 <FaTimes />
                             </button>
 
-                            <h2>{selectedProject.title}</h2>
+                            <h2 id="project-dialog-title">{selectedProject.title}</h2>
+
+                            {!selectedProject.videoLink && (
+                                <img className="project-preview" src={selectedProject.image} alt={selectedProject.title} />
+                            )}
 
                             {selectedProject.videoLink && selectedProject.videoLink.includes('embed') ? (
                                 <div className="video-container">
@@ -247,9 +320,14 @@ const Projects = () => {
                                         View on GitHub
                                     </a>
                                 )}
+                                {selectedProject.projectLink && (
+                                    <a href={selectedProject.projectLink} target="_blank" rel="noopener noreferrer" className="github-btn">
+                                        {selectedProject.projectLinkLabel} ↗
+                                    </a>
+                                )}
                             </div>
-                        </motion.div>
-                    </motion.div>
+                        </Motion.div>
+                    </Motion.div>
                 )}
             </AnimatePresence>
 
@@ -292,19 +370,26 @@ const Projects = () => {
                 }
                 .categories {
                     display: flex;
-                    gap: 1.5rem;
+                    gap: 0.5rem;
+                    flex-wrap: wrap;
                 }
-                .categories span {
+                .categories button {
                     cursor: pointer;
                     color: var(--text-secondary);
                     transition: 0.3s;
+                    font-size: 0.85rem;
+                    padding: 0.55rem 0.85rem;
+                    border: 1px solid transparent;
+                    border-radius: 100px;
                 }
-                .categories span.active, .categories span:hover {
+                .categories button.active, .categories button:hover {
                     color: var(--text-primary);
+                    border-color: var(--glass-border);
+                    background: rgba(255, 255, 255, 0.05);
                 }
                 .project-grid {
                     display: grid;
-                    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+                    grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
                     gap: 2.5rem;
                 }
 
@@ -332,6 +417,7 @@ const Projects = () => {
                     width: 100%;
                     max-height: 90vh;
                     overflow-y: auto;
+                    overscroll-behavior: contain;
                     position: relative;
                 }
 
@@ -345,10 +431,24 @@ const Projects = () => {
                     font-size: 1.5rem;
                     cursor: pointer;
                     transition: 0.3s;
+                    width: 44px;
+                    height: 44px;
+                    display: grid;
+                    place-items: center;
                 }
 
                 .close-btn:hover {
                     color: var(--text-primary);
+                    padding-right: 2rem;
+                }
+                .project-preview {
+                    display: block;
+                    width: 100%;
+                    max-height: 360px;
+                    object-fit: contain;
+                    background: var(--bg-deep);
+                    border-radius: 12px;
+                    margin-bottom: 1.5rem;
                 }
 
                 .modal-content h2 {
@@ -359,7 +459,7 @@ const Projects = () => {
 
                 .video-grid {
                     display: grid;
-                    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
                     gap: 1.5rem;
                     margin-bottom: 2rem;
                 }
@@ -391,6 +491,9 @@ const Projects = () => {
                 .project-description p {
                     margin-bottom: 1.5rem;
                 }
+                .project-description ul { padding-left: 1.25rem; }
+                .project-description li { margin-bottom: 0.5rem; }
+                .project-description, .video-container { margin-bottom: 1.5rem; }
 
                 .modal-tags {
                     display: flex;
@@ -412,6 +515,11 @@ const Projects = () => {
                         flex-direction: column;
                         align-items: flex-start;
                     }
+                    .header h2 { font-size: 2.25rem; }
+                    .modal-backdrop { padding: 1rem; }
+                    .modal-content { padding: 1.5rem; max-height: 85svh; }
+                    .modal-content h2 { font-size: 1.5rem; }
+                    .close-btn { top: 0.75rem; right: 0.75rem; }
                 }
             `}</style>
         </section>

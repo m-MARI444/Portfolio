@@ -6,8 +6,8 @@
   --bg-card: rgba(20, 20, 20, 0.7);
   
   --text-primary: #ffffff;
-  --text-secondary: #888888;
-  --text-muted: #444444;
+  --text-secondary: #a1a1aa;
+  --text-muted: #80808c;
 
   --accent-primary: #ffffff; /* Minimalist white accent */
   --accent-tech: #3b82f6; /* Subtle tech blue for highlights */
@@ -26,6 +26,51 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+html {
+  scroll-padding-top: 96px;
+}
+
+::selection {
+  background: rgba(59, 130, 246, 0.35);
+  color: white;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent-tech);
+  outline-offset: 5px;
+  border-radius: 4px;
+}
+
+.skip-link {
+  position: fixed;
+  top: -100px;
+  left: 1rem;
+  z-index: 3000;
+  padding: 0.75rem 1rem;
+  color: var(--bg-deep);
+  background: white;
+  border-radius: 8px;
+}
+
+.skip-link:focus {
+  top: 1rem;
+}
+
+@media (max-width: 768px) {
+  .app-container main > section {
+    padding: 4.5rem 6%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 body {
