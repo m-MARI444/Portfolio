@@ -38,7 +38,7 @@ const About = () => {
                         <span className="education-label">Education · 2022–2026</span>
                         <h4>B.E. (Honours) in Mechatronics Engineering</h4>
                         <p>Hindusthan College of Engineering and Technology</p>
-                        <span className="education-grade">CGPA 8.78 / 10</span>
+                        <span className="education-grade">CGPA 8.73 / 10</span>
                     </div>
                     <div className="experience-list">
                         <div className="exp-item current-experience">
