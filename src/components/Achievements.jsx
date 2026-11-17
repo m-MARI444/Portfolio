@@ -1,10 +1,14 @@
 import { motion as Motion } from 'framer-motion';
-import { FaAward } from 'react-icons/fa';
 import aicteLogo from '../assets/achievements/aicte.jpg';
 import micLogo from '../assets/achievements/mic.png';
 import saeLogo from '../assets/achievements/saeindia.png';
-import asietLogo from '../assets/achievements/asiet.png';
 import prolificLogo from '../assets/achievements/prolific.png';
+import rsiLogo from '../assets/achievements/rsi.png';
+import mitLogo from '../assets/achievements/mit-manipal.jpg';
+import isroLogo from '../assets/achievements/isro.webp';
+import vnitLogo from '../assets/achievements/vnit.jpg';
+import hicetLogo from '../assets/achievements/hicet.png';
+import matlabLogo from '../assets/achievements/matlab.svg';
 
 const TimelineItem = ({ year, title, org, logo, logoAlt, logoStyle = 'full', delay }) => (
     <Motion.div
@@ -15,8 +19,8 @@ const TimelineItem = ({ year, title, org, logo, logoAlt, logoStyle = 'full', del
         className="timeline-item"
     >
         <div className="timeline-dot"></div>
-        <div className={`achievement-logo logo-${logoStyle} ${logo ? 'has-logo' : ''}`}>
-            {logo ? <span><img src={logo} alt={logoAlt} loading="lazy" decoding="async" /></span> : <FaAward aria-hidden="true" />}
+        <div className={`achievement-logo logo-${logoStyle} has-logo`}>
+            <span><img src={logo} alt={logoAlt} loading="lazy" decoding="async" /></span>
         </div>
         <div className="timeline-content">
             <span className="year">{year}</span>
@@ -87,9 +91,8 @@ const Achievements = () => {
                     year="2024"
                     title="National-Level Workshop on ROS & SLAM Map Building"
                     org="The Robotics Society ASIET · July 2024"
-                    logo={asietLogo}
-                    logoAlt="Adi Shankara Institute of Engineering and Technology logo"
-                    logoStyle="asiet"
+                    logo={rsiLogo}
+                    logoAlt="Robotics Society of India (RSI) logo"
                     delay={0.1}
                 />
                 <TimelineItem
@@ -104,30 +107,40 @@ const Achievements = () => {
                     year="2024"
                     title="Autonomous Solar Vehicle (MIT - Manipal)"
                     org="Designed a 3-wheeled solar vehicle (25km/hr, no external battery) with Level 2 Autonomous capabilities."
+                    logo={mitLogo}
+                    logoAlt="Manipal Institute of Technology (MIT Manipal) logo"
                     delay={0.4}
                 />
                 <TimelineItem
                     year="2023"
                     title="Overview of Space Science and Technology"
                     org="Online Training Programme (ISRO START) conducted by ISRO HQ, Bangalore."
+                    logo={isroLogo}
+                    logoAlt="Indian Space Research Organisation (ISRO) logo"
                     delay={0.5}
                 />
                 <TimelineItem
                     year="2023"
                     title="National Solar Vehicle Championship"
                     org="VNIT - Nagpur (Aug - Oct 2023)"
+                    logo={vnitLogo}
+                    logoAlt="Visvesvaraya National Institute of Technology (VNIT Nagpur) logo"
                     delay={0.6}
                 />
                 <TimelineItem
                     year="2023"
                     title="Go-Kart Race Vehicle"
                     org="HICET - Coimbatore. Designed a lightweight, aerodynamic race vehicle with 3Kw PMSM motor (75km/hr)."
+                    logo={hicetLogo}
+                    logoAlt="Hindusthan College of Engineering and Technology (HICET) logo"
                     delay={0.7}
                 />
                 <TimelineItem
                     year="2023"
                     title="National Level Technical Hands-on Workshop on MATLAB"
                     org="Workshop Participant"
+                    logo={matlabLogo}
+                    logoAlt="MATLAB logo"
                     delay={0.8}
                 />
             </div>
@@ -173,13 +186,12 @@ const Achievements = () => {
                 .achievement-logo.has-logo { background: white; padding: 5px; }
                 .achievement-logo > span { display: block; width: 100%; height: 100%; overflow: hidden; }
                 .achievement-logo img { width: 100%; height: 100%; object-fit: contain; }
-                .achievement-logo.logo-symbol > span, .achievement-logo.logo-asiet > span, .achievement-logo.logo-square > span {
+                .achievement-logo.logo-symbol > span, .achievement-logo.logo-square > span {
                     width: auto;
                     max-width: none;
                     aspect-ratio: 1;
                 }
-                .achievement-logo.logo-asiet > span { aspect-ratio: 0.88; }
-                .achievement-logo.logo-symbol img, .achievement-logo.logo-asiet img { display: block; width: auto; max-width: none; }
+                .achievement-logo.logo-symbol img { display: block; width: auto; max-width: none; }
                 .achievement-logo.logo-square img { object-fit: cover; }
                 .timeline-dot {
                     position: absolute;

@@ -84,8 +84,8 @@ const About = () => {
                 }
                 .image-wrapper {
                     width: 100%;
-                    max-width: 400px;
-                    height: 400px;
+                    max-width: 25rem;
+                    height: 25rem;
                     border-radius: 20px;
                     overflow: hidden;
                     border: 1px solid var(--glass-border);
